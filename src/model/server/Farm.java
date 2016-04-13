@@ -52,70 +52,98 @@ public class Farm {
 		return sheep;
 	}
 
-	public Sheep move(Sheep sheep, String direction) {
-		//System.out.println(sheep.getName() + " " + sheep.getX() + " " + sheep.getY() + " " + direction);
+//	public Sheep move(Sheep sheep, String direction) {
+//		//System.out.println(sheep.getName() + " " + sheep.getX() + " " + sheep.getY() + " " + direction);
+//		Sheep s = findSheep(sheep);
+//		if (map[s.getY()][s.getX()] == 1) {
+//			int temp;
+//			switch (direction) {
+//			case "up":
+//				temp = s.getY() - 1;
+//				if (temp >= 0) {
+//					tiles[s.getY()][s.getX()].removeSheep(sheep);
+//					if(!tiles[s.getY()][s.getX()].hasSheep()) {
+//						map[s.getY()][s.getX()] = 0;
+//					}
+//					map[temp][s.getX()] = 1;
+//					tiles[temp][s.getX()].addSheep(sheep);
+//					s.setY(temp);
+//				}
+//				break;
+//			case "down":
+//				temp = s.getY() + 1;
+//				if (temp <= 99) {
+//					tiles[s.getY()][s.getX()].removeSheep(sheep);
+//					if(!tiles[s.getY()][s.getX()].hasSheep()) {
+//						map[s.getY()][s.getX()] = 0;
+//					}
+//					map[temp][s.getX()] = 1;
+//					tiles[temp][s.getX()].addSheep(sheep);
+//					s.setY(temp);
+//				}
+//				break;
+//			case "left":
+//				temp = s.getX() - 1;
+//				if (temp >= 0) {
+//					tiles[s.getY()][s.getX()].removeSheep(sheep);
+//					if(!tiles[s.getY()][s.getX()].hasSheep()) {
+//						map[s.getY()][s.getX()] = 0;
+//					}
+//					map[s.getY()][temp] = 1;
+//					tiles[s.getY()][temp].addSheep(sheep);
+//					s.setX(temp);
+//				}
+//				break;
+//			case "right":
+//				temp = s.getX() + 1;
+//				if (temp <= 99) {
+//					tiles[s.getY()][s.getX()].removeSheep(sheep);
+//					if(!tiles[s.getY()][s.getX()].hasSheep()) {
+//						map[s.getY()][s.getX()] = 0;
+//					}
+//					map[s.getY()][temp] = 1;
+//					tiles[s.getY()][temp].addSheep(sheep);
+//					s.setX(temp);
+//				} else {//new code
+//					s.setTransfer(true);
+//				}
+//				break;
+//			}
+//		} else {
+//			// Sheep Error, not sheep
+//			//System.out.println("NO SHEEP!");
+//		}
+//		return s;
+//	}
+	
+	public Sheep plot(Sheep sheep, SheepDTO sheepDto) {
 		Sheep s = findSheep(sheep);
 		if (map[s.getY()][s.getX()] == 1) {
-			int temp;
-			switch (direction) {
-			case "up":
-				temp = s.getY() - 1;
-				if (temp >= 0) {
-					tiles[s.getY()][s.getX()].removeSheep(sheep);
-					if(!tiles[s.getY()][s.getX()].hasSheep()) {
-						map[s.getY()][s.getX()] = 0;
-					}
-					map[temp][s.getX()] = 1;
-					tiles[temp][s.getX()].addSheep(sheep);
-					s.setY(temp);
-				}
-				break;
-			case "down":
-				temp = s.getY() + 1;
-				if (temp <= 99) {
-					tiles[s.getY()][s.getX()].removeSheep(sheep);
-					if(!tiles[s.getY()][s.getX()].hasSheep()) {
-						map[s.getY()][s.getX()] = 0;
-					}
-					map[temp][s.getX()] = 1;
-					tiles[temp][s.getX()].addSheep(sheep);
-					s.setY(temp);
-				}
-				break;
-			case "left":
-				temp = s.getX() - 1;
-				if (temp >= 0) {
-					tiles[s.getY()][s.getX()].removeSheep(sheep);
-					if(!tiles[s.getY()][s.getX()].hasSheep()) {
-						map[s.getY()][s.getX()] = 0;
-					}
-					map[s.getY()][temp] = 1;
-					tiles[s.getY()][temp].addSheep(sheep);
-					s.setX(temp);
-				}
-				break;
-			case "right":
-				temp = s.getX() + 1;
-				if (temp <= 99) {
-					tiles[s.getY()][s.getX()].removeSheep(sheep);
-					if(!tiles[s.getY()][s.getX()].hasSheep()) {
-						map[s.getY()][s.getX()] = 0;
-					}
-					map[s.getY()][temp] = 1;
-					tiles[s.getY()][temp].addSheep(sheep);
-					s.setX(temp);
-				} else {//new code
-					s.setTransfer(true);
-				}
-				break;
+			tiles[s.getY()][s.getX()].removeSheep(sheep);
+			if(!tiles[s.getY()][s.getX()].hasSheep()) {
+				map[s.getY()][s.getX()] = 0;
 			}
-		} else {
-			// Sheep Error, not sheep
-			//System.out.println("NO SHEEP!");
+			map[sheepDto.getY()][sheepDto.getX()] = 1;
+			tiles[sheepDto.getY()][sheepDto.getX()].addSheep(sheep);
+			s.setY(sheepDto.getY());
+			s.setX(sheepDto.getX());
 		}
 		return s;
+		
 	}
-
+	
+	public void remove(Sheep sheep) {
+		Sheep s = findSheep(sheep);
+		if (map[s.getY()][s.getX()] == 1) {
+			tiles[s.getY()][s.getX()].removeSheep(sheep);
+			if(!tiles[s.getY()][s.getX()].hasSheep()) {
+				map[s.getY()][s.getX()] = 0;
+			}
+			removeSheep(s);
+		}
+		
+	}
+	
 	public Sheep eat(Sheep sheep) {
 		Sheep s = findSheep(sheep);
 		if (map[s.getY()][s.getX()] == 1) {
@@ -134,37 +162,13 @@ public class Farm {
 	}
 
 	private Sheep findSheep(Sheep sheep) {
-//		for (Sheep s : sheeps) {
-//			//System.out.println("** " + s.getName() + " " + s.getX() + " " + s.getY() + " " + s.getScore());
-//			File file = new File("states.txt");
-//			
-//			if (!file.exists()) {
-//				try {
-//					file.createNewFile();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//			FileWriter fw;
-//			try {
-//				fw = new FileWriter(file.getAbsoluteFile(), true);
-//				BufferedWriter bw = new BufferedWriter(fw);
-//				if(s.getScore() != 0)
-//					bw.write("** " + s.getName() + " " + s.getX() + " " + s.getY() + " " + s.getScore() + "\n");
-//				bw.close();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//			if (sheep.equals(s)) {
-//				return s;
-//			}
-//		}
 		return sheeps.get(sheeps.indexOf(sheep));
 	}
-
+	
+	private void removeSheep(Sheep sheep) {
+		sheeps.remove(sheep);
+	}
+	
 	public List<SheepDTO> getSheepDTOs() {
 		List<SheepDTO> sheepDtos = Collections.synchronizedList(new ArrayList<>());
 //		for (Sheep sheep : sheeps) {

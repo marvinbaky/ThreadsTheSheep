@@ -47,7 +47,7 @@ public class Client {
 				try {
 					serverData = (ServerDataDTO) in.readObject();
 					if (sheep == null) {
-						sheep = new Sheep(serverData.getCurrUser(), serverData.getX(), serverData.getY());
+						//sheep = new Sheep(serverData.getCurrUser());
 						startWriter();
 					}
 				} catch (ClassNotFoundException e) {

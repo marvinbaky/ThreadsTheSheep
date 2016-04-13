@@ -1,6 +1,10 @@
 package model.client;
 
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
+
+import model.DTO.ServerInfoDTO;
 
 public class Sheep {
 
@@ -17,13 +21,26 @@ public class Sheep {
 	private boolean eat;
 	private int score;
 	private String direction;
+	private ServerInfoDTO currServerInfo;
+	private boolean willTransfer = false;
 	private Semaphore waitMove;
 	private final Object lock = new Object();
 
-	public Sheep(String name, int x, int y) {
+	public Sheep(String name, List<ServerInfoDTO> serverInfoDto) {
+		Random rand = new Random();
+		
 		this.name = name;
-		this.x = x;
-		this.y = y;
+		this.x = rand.nextInt(100);
+		this.y = rand.nextInt(100);
+		
+		for(ServerInfoDTO s: serverInfoDto) {
+			if(x >= s.getStartX() && x <= s.getEndX() 
+					&& y >= s.getStartY() && y <= s.getEndY()) {
+				currServerInfo = s;
+				break;
+			}
+		}
+		
 		this.direction = "up";
 	}
 	
@@ -69,9 +86,6 @@ public class Sheep {
 	
 	public void setEatState(boolean bool) {
 		eat = bool;
-		if(eat) {
-			waitMove.release();
-		}
 	}
 	
 	public String getDirection() {
@@ -84,7 +98,22 @@ public class Sheep {
 
 	public void move(String direction) {
 		this.direction = direction;
-		waitMove.release();
+	}
+	
+	public void setNewServerInfo(ServerInfoDTO serverInfo) {
+		currServerInfo = serverInfo;
+	}
+	
+	public ServerInfoDTO getServerInfo() {
+		return currServerInfo;
+	}
+	 
+	public void setTransfer(boolean bool) {
+		willTransfer = bool;
+	}
+	
+	public boolean willTransfer() {
+		return willTransfer;
 	}
 
 }

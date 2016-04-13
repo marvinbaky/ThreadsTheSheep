@@ -13,7 +13,7 @@ public class SheepDTO implements Serializable{
 	private int y;
 	private boolean eat;
 	private String direction;
-	private boolean hasConnected;
+	private boolean willTransfer;
 	
 	public SheepDTO(String username) {
 		this.username = username;
@@ -49,6 +49,14 @@ public class SheepDTO implements Serializable{
 		this.direction = direction;
 	}
 	
+	public SheepDTO(String username, int x, int y, boolean eat, String direction, boolean willTransfer) {
+		this.username = username;
+		this.x = x;
+		this.y = y;
+		this.eat = eat;
+		this.direction = direction;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -77,7 +85,11 @@ public class SheepDTO implements Serializable{
 		return direction;
 	}
 	
-	public void setConnected() {
-		hasConnected = true;
+	public void willTransfer() {
+		willTransfer = true;
+	}
+	
+	public boolean getTransfer() {
+		return willTransfer;
 	}
 }

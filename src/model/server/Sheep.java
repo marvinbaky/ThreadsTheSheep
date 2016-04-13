@@ -14,7 +14,6 @@ public class Sheep {
 	 */
 	private int y;
 	private int score;
-	private boolean willTransfer;
 	
 	public Sheep(String name) {
 		this.name = name;
@@ -57,10 +56,6 @@ public class Sheep {
 	
 	public void incrementScore(){
 		score++;
-	}
-	
-	public void setTransfer(boolean bool) {
-		willTransfer = bool;
 	}
 
 	@Override

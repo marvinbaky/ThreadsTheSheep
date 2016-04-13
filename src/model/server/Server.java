@@ -3,6 +3,7 @@ package model.server;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,9 +49,12 @@ public class Server {
 			
 			WriteThread writer = new WriteThread();
 			writer.start();
+			
 			while (true) {
 				try {
-					serverThread = new ServerThread(server.accept(), farm, grid);
+					Socket client = server.accept();
+					serverThread = new ServerThread(client, farm, grid);
+					
 					serverThread.start();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

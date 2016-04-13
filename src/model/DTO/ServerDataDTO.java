@@ -10,6 +10,7 @@ public class ServerDataDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<SheepDTO> sheepDtos;
+	private List<ServerInfoDTO> serverInfos;
 	private String currUser;
 	private int x;
 	private int y;
@@ -22,8 +23,16 @@ public class ServerDataDTO implements Serializable {
 		this.y = y;
 	}
 	
+	public ServerDataDTO(List<ServerInfoDTO> serverInfos) {
+		this.serverInfos = serverInfos;
+	}
+	
 	public List<SheepDTO> getSheepDtos() {
 		return sheepDtos;
+	}
+	
+	public List<ServerInfoDTO> getServerInfos() {
+		return serverInfos;
 	}
 
 	public String getCurrUser() {

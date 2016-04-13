@@ -2,8 +2,7 @@ package controller.server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.SocketException;
-import java.util.ArrayList;
+import java.net.Socket;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
@@ -88,7 +87,7 @@ public class WriteThread extends Thread {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
+			
 			for (int i = 0; i < allClientStream.size(); i++) {
 				try {
 					allClientStream.get(i).writeObject(data);

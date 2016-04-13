@@ -12,7 +12,7 @@ public class Driver {
 		
 		ClientThread[] clients = new ClientThread[numUser];
 		for(int i = 0; i < numUser; i++) {
-			clients[i] = new ClientThread("Player " + i, 2000);
+			clients[i] = new ClientThread("Player " + i, 1000);
 		}
 		
 		for(int i = 0; i < numUser; i++) {

@@ -54,23 +54,27 @@ public class ServerThread extends Thread {
 		try {
 			ObjectInputStream in = new ObjectInputStream(mainClient.getInputStream());
 			SheepDTO sheepDto;
-			Sheep sheep;
+			Sheep sheep = null;
 			while (true) {
 				sheepDto = (SheepDTO) in.readObject();
+					
 				if (username == null) {
 					username = sheepDto.getUsername();
 					//if(sheepD)
-					sheep = new Sheep(username);
+					sheep = new Sheep(username, sheepDto.getX(), sheepDto.getY());
 					// System.out.println("****" + sheep.getX() + " " +
 					// sheep.getY());
 					sheep = farm.putNewSheep(sheep);
 				} else {
-					if (sheepDto.isEat()) {
+					if(sheepDto.getTransfer()) {
+						farm.remove(sheep);
+						break;
+					} else if (sheepDto.isEat()) {
 						sheep = new Sheep(username, sheepDto.getX(), sheepDto.getY());
 						sheep = farm.eat(sheep);
 					} else {
 						sheep = new Sheep(username, sheepDto.getX(), sheepDto.getY());
-						sheep = farm.move(sheep, sheepDto.getDirection());
+						sheep = farm.plot(sheep, sheepDto);
 					}
 				}
 

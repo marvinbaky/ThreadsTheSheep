@@ -30,7 +30,7 @@ public class Sheep {
 		Random rand = new Random();
 		
 		this.name = name;
-		this.x = rand.nextInt(100);
+		this.x = 0;
 		this.y = rand.nextInt(100);
 		
 		for(ServerInfoDTO s: serverInfoDto) {

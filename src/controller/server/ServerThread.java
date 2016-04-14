@@ -20,6 +20,7 @@ public class ServerThread extends Thread {
 
 	private static List<ObjectOutputStream> allClientStream;
 	private static BlockingQueue<ServerDataDTO> serverDataDtos;
+	private static List<SheepDTO> sheepDtos;
 	private Socket mainClient;
 	private String username;
 	private static Farm farm;
@@ -47,6 +48,10 @@ public class ServerThread extends Thread {
 
 	public static void initializeServerDataQueue(BlockingQueue<ServerDataDTO> serverDataQueue) {
 		ServerThread.serverDataDtos = serverDataQueue;
+	}
+	
+	public static void  initializeSheepDTOs(List<SheepDTO> sheepDtos) {
+		ServerThread.sheepDtos = sheepDtos;
 	}
 
 	public void run() {
@@ -80,10 +85,12 @@ public class ServerThread extends Thread {
 
 				grid.updateGrid(farm);
 				grid.repaint();
-				ServerDataDTO serverData = new ServerDataDTO(farm.getSheepDTOs(), sheep.getName(), sheep.getX(),
+				ServerDataDTO serverData = new ServerDataDTO(sheep.getName(), sheep.getX(),
 						sheep.getY());
-
+				SheepDTO toPassSheep = new SheepDTO(sheep.getName(), sheep.getX(), sheep.getY(), sheep.getScore());
+				
 				serverDataDtos.put(serverData);
+				sheepDtos.add(toPassSheep);
 			}
 
 			// Thread.sleep(50);

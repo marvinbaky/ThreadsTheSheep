@@ -13,6 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import controller.server.ServerThread;
 import controller.server.WriteThread;
 import model.DTO.ServerDataDTO;
+import model.DTO.SheepDTO;
 import view.server.GridPanel;
 
 public class Server {
@@ -42,10 +43,15 @@ public class Server {
 			List<ObjectOutputStream> allClientStream = Collections.synchronizedList(new ArrayList<>());
 			ServerThread.initializeClientStream(allClientStream);
 			WriteThread.initializeClientStream(allClientStream);
+			
 			BlockingQueue<ServerDataDTO> serverDataQueue = 
 					new LinkedBlockingQueue<>();
 			ServerThread.initializeServerDataQueue(serverDataQueue);
 			WriteThread.initializeServerDataQueue(serverDataQueue);
+			
+			List<SheepDTO> sheepDtos = Collections.synchronizedList(new ArrayList<>());
+			ServerThread.initializeSheepDTOs(sheepDtos);
+			WriteThread.initializeSheepDTOs(sheepDtos);
 			
 			WriteThread writer = new WriteThread();
 			writer.start();

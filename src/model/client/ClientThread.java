@@ -90,7 +90,7 @@ public class ClientThread extends Thread {
 					if (direction.equals("eat")) {
 						sheep.setEatState(true);
 					} else {
-						sheep.move(direction);
+						sheep.move("right");
 						farm.move(sheep);
 
 						if (sheep.willTransfer()) {
@@ -100,7 +100,6 @@ public class ClientThread extends Thread {
 									sheep.getY(), sheep.getEatState(), sheep.getDirection());
 							sheepDTO.willTransfer();
 							out.writeObject(sheepDTO);
-							reader.interrupt();
 							clientSocket.close();
 							clientSocket = new Socket(newServerInfo.getAddrName(), newServerInfo.getPort());
 							out = new ObjectOutputStream(clientSocket.getOutputStream());

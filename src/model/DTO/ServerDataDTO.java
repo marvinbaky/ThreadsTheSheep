@@ -23,8 +23,18 @@ public class ServerDataDTO implements Serializable {
 		this.y = y;
 	}
 	
+	public ServerDataDTO(String username, int x, int y) {
+		currUser = username;
+		this.x = x;
+		this.y = y;
+	}
+	
 	public ServerDataDTO(List<ServerInfoDTO> serverInfos) {
 		this.serverInfos = serverInfos;
+	}
+	
+	public void setSheepDTOs(List<SheepDTO> sheepDtos) {
+		this.sheepDtos = sheepDtos;
 	}
 	
 	public List<SheepDTO> getSheepDtos() {

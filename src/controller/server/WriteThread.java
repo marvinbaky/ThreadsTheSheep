@@ -3,14 +3,18 @@ package controller.server;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import model.DTO.ServerDataDTO;
+import model.DTO.SheepDTO;
 
 public class WriteThread extends Thread {
 	private static List<ObjectOutputStream> allClientStream;
 	private static BlockingQueue<ServerDataDTO> serverDataDtos;
+	private static List<SheepDTO> sheepDtos;
 
 	public WriteThread() {
 	}
@@ -21,6 +25,10 @@ public class WriteThread extends Thread {
 
 	public static void initializeServerDataQueue(BlockingQueue<ServerDataDTO> serverDataQueue) {
 		WriteThread.serverDataDtos = serverDataQueue;
+	}
+	
+	public static void  initializeSheepDTOs(List<SheepDTO> sheepDtos) {
+		WriteThread.sheepDtos = sheepDtos;
 	}
 
 	public void run() {
@@ -88,12 +96,20 @@ public class WriteThread extends Thread {
 				e1.printStackTrace();
 			}
 			
+			synchronized(sheepDtos) {
+				data.setSheepDTOs(sheepDtos);
+				List<SheepDTO> sheepDtos = Collections.synchronizedList(new ArrayList<>());
+				ServerThread.initializeSheepDTOs(sheepDtos);
+				WriteThread.initializeSheepDTOs(sheepDtos);
+			}
+			
 			for (int i = 0; i < allClientStream.size(); i++) {
 				try {
 					allClientStream.get(i).writeObject(data);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
+					allClientStream.remove(allClientStream.get(i));
 				}
 			}
 		}

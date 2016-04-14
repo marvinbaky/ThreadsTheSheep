@@ -21,7 +21,7 @@ public class GridPanel extends JPanel implements ActionListener {
 
 	public GridPanel(Farm farm) {
 		this.farm = farm;
-		setPreferredSize(new Dimension(600, 600));
+		setPreferredSize(new Dimension(300, 600));
 		//Thread loop = new Thread(new GameLoop(this));
 		//loop.start();
 	}
@@ -36,7 +36,7 @@ public class GridPanel extends JPanel implements ActionListener {
 		int width = 600 / MapConfig.MAP_WIDTH;
 		int height = 600 / MapConfig.MAP_HEIGHT;
 
-		for (int row = 0; row < MapConfig.MAP_WIDTH; row++) {
+		for (int row = 0; row < 50; row++) {
 			for (int col = 0; col < MapConfig.MAP_HEIGHT; col++) {
 				if (farm.cellHasSheep(col, row)) {
 					g.setColor(Color.WHITE);

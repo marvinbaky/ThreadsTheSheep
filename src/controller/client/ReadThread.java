@@ -83,10 +83,12 @@ public class ReadThread extends Thread {
 					sheep.setX(serverData.getX());
 					sheep.setY(serverData.getY());
 				}
-				
+				//System.out.println("read");
 				if(farm.hasTiles()) {
 					farm.plot(serverData.getSheepDtos());
+					//grid.updateFarm(serverData.);
 					grid.repaint();
+					//System.out.println("repaint");
 				}
 				
 //				List<SheepDTO> sheepDtos = serverData.getSheepDtos();

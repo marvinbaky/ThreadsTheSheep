@@ -41,21 +41,7 @@ public class ClientThreadWithUI extends Thread {
 		}
 		this.username = username;
 		this.clientPanel = clientPanel;
-		farm = new Farm();
-	}
-	
-	public ClientThreadWithUI(String username, int port, Farm farm) {
-		try {
-			clientSocket = new Socket("localhost", port);
-			out = new ObjectOutputStream(clientSocket.getOutputStream());
-			in = new ObjectInputStream(clientSocket.getInputStream());
-		} catch (UnknownHostException e) {
-			System.err.println("Don't know about host");
-		} catch (IOException e) {
-			System.err.println("Couldn't get I/O for the connection to host");
-		}
-		this.username = username;
-		this.farm = farm;
+		this.farm = clientPanel.getFarm();
 	}
 
 	public void run() {
@@ -120,9 +106,13 @@ public class ClientThreadWithUI extends Thread {
 								out.writeObject(sheepDTO);
 								clientSocket.close();
 								clientSocket = new Socket(newServerInfo.getAddrName(), newServerInfo.getPort());
+								
 								out = new ObjectOutputStream(clientSocket.getOutputStream());
 								in = new ObjectInputStream(clientSocket.getInputStream());
-								reader = new ReadThread(username, in, sheep);
+								sheepDTO.setTransfer(false);
+								//sheepDTO.setDirection
+								out.writeObject(sheepDTO);
+								reader = new ReadThread(username, in, sheep, farm, clientPanel);
 								reader.start();
 							}
 							sheep.setTransfer(false);

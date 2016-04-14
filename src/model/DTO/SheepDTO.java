@@ -109,4 +109,9 @@ public class SheepDTO implements Serializable{
 	public boolean getTransfer() {
 		return willTransfer;
 	}
+
+	public void setTransfer(boolean b) {
+		// TODO Auto-generated method stub
+		willTransfer = b;
+	}
 }

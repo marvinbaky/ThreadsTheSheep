@@ -11,9 +11,9 @@ public class ServerScreen extends JFrame {
 	public ServerScreen(GridPanel grid) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 10, 1000, 760);
 		//setContentPane(grid);
 		this.add(grid);
+		this.pack();
 	}
 
 }

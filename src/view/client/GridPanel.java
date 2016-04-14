@@ -25,7 +25,7 @@ public class GridPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Farm farm;
+	private Farm farm;
 	//private String direction = "none";
 	private Map<String,Boolean> keys;
 
@@ -40,6 +40,12 @@ public class GridPanel extends JPanel {
 		//add controls
 		
         
+	}
+	public void updateFarm(Farm farm){
+		this.farm = farm;
+	}
+	public Farm getFarm(){
+		return this.farm;
 	}
 	private void initializeKeys(){
 		keys.put("up", false);
@@ -176,12 +182,13 @@ public class GridPanel extends JPanel {
         });
         
         inputMap.put(KeyStroke.getKeyStroke("released SPACE"), "rSPACE");
-        actionMap.put("rSPACE", new AbstractAction("rright") {
+        actionMap.put("rSPACE", new AbstractAction("rspace") {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				keys.put("space", false);
+				System.out.println("releas");
 				
 			}
         }); 

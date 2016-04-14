@@ -39,6 +39,20 @@ public class ClientThread extends Thread {
 		farm = new Farm();
 	}
 
+	public ClientThread(String username, int port, Tile[][] tiles) {
+		try {
+			clientSocket = new Socket("localhost", port);
+			out = new ObjectOutputStream(clientSocket.getOutputStream());
+			in = new ObjectInputStream(clientSocket.getInputStream());
+		} catch (UnknownHostException e) {
+			System.err.println("Don't know about host");
+		} catch (IOException e) {
+			System.err.println("Couldn't get I/O for the connection to host");
+		}
+		this.username = username;
+		farm = new Farm(tiles);
+	}
+
 	public void run() {
 		if (clientSocket != null && out != null && in != null) {
 			try {
@@ -55,7 +69,7 @@ public class ClientThread extends Thread {
 						clientSocket = new Socket(sheep.getServerInfo().getAddrName(), sheep.getServerInfo().getPort());
 						out = new ObjectOutputStream(clientSocket.getOutputStream());
 						in = new ObjectInputStream(clientSocket.getInputStream());
-						//startWriter();
+						// startWriter();
 					}
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -64,6 +78,7 @@ public class ClientThread extends Thread {
 
 				ReadThread reader = new ReadThread(username, in, sheep, farm);
 				reader.start();
+
 				Random rand = new Random();
 
 				while (true) {
@@ -96,16 +111,18 @@ public class ClientThread extends Thread {
 						if (sheep.willTransfer()) {
 							findNewServerInfo();
 							ServerInfoDTO newServerInfo = sheep.getServerInfo();
-							SheepDTO sheepDTO = new SheepDTO(sheep.getName(), sheep.getX(), 
-									sheep.getY(), sheep.getEatState(), sheep.getDirection());
+							SheepDTO sheepDTO = new SheepDTO(sheep.getName(), sheep.getX(), sheep.getY(),
+									sheep.getEatState(), sheep.getDirection());
 							sheepDTO.willTransfer();
 							out.writeObject(sheepDTO);
 							clientSocket.close();
 							clientSocket = new Socket(newServerInfo.getAddrName(), newServerInfo.getPort());
 							out = new ObjectOutputStream(clientSocket.getOutputStream());
 							in = new ObjectInputStream(clientSocket.getInputStream());
+
 							reader = new ReadThread(username, in, sheep, farm);
 							reader.start();
+
 						}
 						sheep.setTransfer(false);
 					}
@@ -115,8 +132,8 @@ public class ClientThread extends Thread {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					SheepDTO sheepDTO = new SheepDTO(sheep.getName(), sheep.getX(), 
-							sheep.getY(), sheep.getEatState(), sheep.getDirection());
+					SheepDTO sheepDTO = new SheepDTO(sheep.getName(), sheep.getX(), sheep.getY(), sheep.getEatState(),
+							sheep.getDirection());
 					out.writeObject(sheepDTO);
 					sheep.setEatState(false);
 				}

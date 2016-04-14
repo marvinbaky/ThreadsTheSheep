@@ -23,7 +23,13 @@ public class ReadThread extends Thread {
 		this.in = in;
 		this.sheep = sheep;
 	}
-
+	
+	public ReadThread(String name, ObjectInputStream in, Sheep sheep) {
+		username = name;
+		this.in = in;
+		this.sheep = sheep;
+	}
+	
 	public ReadThread(String name, ObjectInputStream in, Sheep sheep, Farm farm) {
 		username = name;
 		this.in = in;
@@ -37,15 +43,8 @@ public class ReadThread extends Thread {
 		try {
 			while (true) {
 				long startTime = System.nanoTime();
-				// try {
 				serverData = (ServerDataDTO) in.readObject();
-				// } catch (InternalError | ClassCastException |
-				// IllegalStateException e) {
-				// break;
-				// }
-
 				long endTime = System.nanoTime();
-
 				long duration = (endTime - startTime);
 				long ms = duration / 1000000;
 
@@ -70,15 +69,14 @@ public class ReadThread extends Thread {
 					e.printStackTrace();
 				}
 
-				// System.out.println(username + ": " + duration);
 				if (serverData.getCurrUser() == sheep.getName()) {
 					sheep.setX(serverData.getX());
 					sheep.setY(serverData.getY());
 				}
 				
-				serverData.getSheepDtos();
-				
-				farm.plot(serverData.getSheepDtos());
+				if(farm.hasTiles()) {
+					farm.plot(serverData.getSheepDtos());
+				}
 				
 //				List<SheepDTO> sheepDtos = serverData.getSheepDtos();
 //				for (int i = 0; i < sheepDtos.size(); i++) {

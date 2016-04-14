@@ -12,19 +12,31 @@ public class Farm {
 	private int[][] map;
 	private Tile[][] tiles;
 	private List<Sheep> sheeps;
+	private boolean hasTiles;
 
 	public Farm() {
 		map = new int[100][100];
 		tiles = new Tile[100][100];
 		sheeps = new ArrayList<>();
 		
-		for (int i = 0; i < 100; i++) {
-			for (int j = 0; j < 100; j++) {
-				tiles[i][j] = new Tile(i, j);
-			}
-		}
+//		for (int i = 0; i < 100; i++) {
+//			for (int j = 0; j < 100; j++) {
+//				tiles[i][j] = new Tile(i, j);
+//			}
+//		}
 	}
-
+	
+	public Farm(Tile[][] tiles) {
+		map = new int[100][100];
+		this.tiles = tiles;
+		sheeps = new ArrayList<>();
+		hasTiles = true;
+	}
+	
+	public boolean hasTiles() {
+		return hasTiles;
+	}
+	
 	public void move(Sheep sheep) {
 		int temp;
 		ServerInfoDTO serverInfo = sheep.getServerInfo();

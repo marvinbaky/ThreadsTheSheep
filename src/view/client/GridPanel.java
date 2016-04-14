@@ -188,7 +188,6 @@ public class GridPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				keys.put("space", false);
-				System.out.println("releas");
 				
 			}
         }); 

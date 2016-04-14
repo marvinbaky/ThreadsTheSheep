@@ -10,22 +10,12 @@ public class Driver {
 		System.out.println("Num of user: ");
 		int numUser = sc.nextInt();
 		
-		Tile[][] tiles = new Tile[100][100];
 		
-		for (int i = 0; i < 100; i++) {
-			for (int j = 0; j < 100; j++) {
-				tiles[i][j] = new Tile(i, j);
-			}
-		}
 		
 		ClientThread[] clients = new ClientThread[numUser];
 		for(int i = 0; i < numUser; i++) {
 			//System.out.println(i);
-			if(i == 0) {
-				clients[i] = new ClientThread("Player " + i, 1000, tiles);
-			} else {
-				clients[i] = new ClientThread("Player " + i, 1000);
-			}
+			clients[i] = new ClientThread("Player " + i, 1000);
 		}
 		
 		for(int i = 0; i < numUser; i++) {

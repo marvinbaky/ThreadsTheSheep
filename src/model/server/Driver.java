@@ -19,7 +19,7 @@ public class Driver {
 		//server.acceptConnection(farm);
 		
 		List<ServerInfoDTO> serverInfos = new ArrayList<>();
-		
+		//ServerInfoDTO serverInfo1 = new ServerInfoDTO("localhost", 2000, 0, 99, 0, 99);
 		ServerInfoDTO serverInfo1 = new ServerInfoDTO("localhost", 2000, 0, 49, 0, 99);
 		ServerInfoDTO serverInfo2 = new ServerInfoDTO("localhost", 2001, 50, 99, 0, 99);
 		

@@ -11,6 +11,7 @@ import model.DTO.ServerDataDTO;
 import model.DTO.SheepDTO;
 import model.client.Farm;
 import model.client.Sheep;
+import view.client.GridPanel;
 
 public class ReadThread extends Thread {
 
@@ -18,6 +19,7 @@ public class ReadThread extends Thread {
 	private Sheep sheep;
 	private String username;
 	private Farm farm;
+	private GridPanel grid;
 
 	public ReadThread(ObjectInputStream in, Sheep sheep) {
 		this.in = in;
@@ -35,6 +37,14 @@ public class ReadThread extends Thread {
 		this.in = in;
 		this.sheep = sheep;
 		this.farm = farm;
+	}
+	
+	public ReadThread(String name, ObjectInputStream in, Sheep sheep, Farm farm, GridPanel grid) {
+		username = name;
+		this.in = in;
+		this.sheep = sheep;
+		this.farm = farm;
+		this.grid = grid;
 	}
 
 	public void run() {
@@ -76,6 +86,7 @@ public class ReadThread extends Thread {
 				
 				if(farm.hasTiles()) {
 					farm.plot(serverData.getSheepDtos());
+					grid.repaint();
 				}
 				
 //				List<SheepDTO> sheepDtos = serverData.getSheepDtos();

@@ -32,7 +32,15 @@ public class Farm {
 		sheeps = new ArrayList<>();
 		hasTiles = true;
 	}
-	
+	public boolean cellHasGrass(int x, int y){
+		return tiles[x][y].hasGrass();
+	}
+	public boolean cellHasSheep(int x,int y){
+		if(map[x][y]==1){
+			return true;
+		}
+		return false;
+	}
 	public boolean hasTiles() {
 		return hasTiles;
 	}

@@ -62,7 +62,7 @@ public class ClientThread extends Thread {
 					e.printStackTrace();
 				}
 
-				ReadThread reader = new ReadThread(username, in, sheep);
+				ReadThread reader = new ReadThread(username, in, sheep, farm);
 				reader.start();
 				Random rand = new Random();
 
@@ -104,7 +104,7 @@ public class ClientThread extends Thread {
 							clientSocket = new Socket(newServerInfo.getAddrName(), newServerInfo.getPort());
 							out = new ObjectOutputStream(clientSocket.getOutputStream());
 							in = new ObjectInputStream(clientSocket.getInputStream());
-							reader = new ReadThread(username, in, sheep);
+							reader = new ReadThread(username, in, sheep, farm);
 							reader.start();
 						}
 						sheep.setTransfer(false);

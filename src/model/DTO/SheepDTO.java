@@ -34,6 +34,23 @@ public class SheepDTO implements Serializable{
 		this.y = y;
 	}
 	
+	
+	public SheepDTO(String username, int x, int y, int score, boolean eat) {
+		this.username = username;
+		this.score = score;
+		this.x = x;
+		this.y = y;
+		this.eat = eat;
+	}
+	
+	public SheepDTO(String username, int prevX, int prevY, int x, int y, int score, boolean eat) {
+		this.username = username;
+		this.score = score;
+		this.x = x;
+		this.y = y;
+		this.eat = eat;
+	}
+	
 	/**
 	 * Used by the client.
 	 * @param username

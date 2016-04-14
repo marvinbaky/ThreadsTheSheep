@@ -14,6 +14,7 @@ public class Sheep {
 	 */
 	private int y;
 	private int score;
+	private boolean hasEaten;
 	
 	public Sheep(String name) {
 		this.name = name;
@@ -56,6 +57,14 @@ public class Sheep {
 	
 	public void incrementScore(){
 		score++;
+	}
+	
+	public void setHasEaten(boolean bool) {
+		hasEaten = bool;
+	}
+	
+	public boolean hasEaten() {
+		return hasEaten;
 	}
 
 	@Override

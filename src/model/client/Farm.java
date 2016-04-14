@@ -1,13 +1,28 @@
 package model.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.DTO.ServerInfoDTO;
+import model.DTO.SheepDTO;
+import model.client.Tile;
 
 //Client Farm
 public class Farm {
 	private int[][] map;
+	private Tile[][] tiles;
+	private List<Sheep> sheeps;
 
 	public Farm() {
 		map = new int[100][100];
+		tiles = new Tile[100][100];
+		sheeps = new ArrayList<>();
+		
+		for (int i = 0; i < 100; i++) {
+			for (int j = 0; j < 100; j++) {
+				tiles[i][j] = new Tile(i, j);
+			}
+		}
 	}
 
 	public void move(Sheep sheep) {
@@ -61,5 +76,54 @@ public class Farm {
 		default:
 			break;
 		}
+	}
+
+	public void plot(List<SheepDTO> sheeps) {
+
+		Sheep currSheep;
+		SheepDTO currSheepDto;
+		for (int i = 0; i < sheeps.size(); i++) {
+			currSheepDto = sheeps.get(i);
+			currSheep = findSheep(currSheepDto);
+			if (currSheep == null) {
+				currSheep = new Sheep(currSheepDto.getUsername(), currSheepDto.getX(), currSheepDto.getY(),
+						currSheepDto.getScore());
+				this.sheeps.add(currSheep);
+				
+				map[currSheepDto.getY()][currSheepDto.getX()] = 1;
+				tiles[currSheepDto.getY()][currSheepDto.getX()].addSheep(currSheep);
+				if(currSheepDto.isEat()) {
+					tiles[currSheepDto.getY()][currSheepDto.getX()].setHasGrass(false);
+				}
+				currSheep.setY(currSheepDto.getY());
+				currSheep.setX(currSheepDto.getX());
+			} else {
+				if (map[currSheep.getY()][currSheep.getX()] == 1) {
+					tiles[currSheep.getY()][currSheep.getX()].removeSheep(currSheep);
+					if(!tiles[currSheep.getY()][currSheep.getX()].hasSheep()) {
+						map[currSheep.getY()][currSheep.getX()] = 0;
+					}
+					map[currSheepDto.getY()][currSheepDto.getX()] = 1;
+					tiles[currSheepDto.getY()][currSheepDto.getX()].addSheep(currSheep);
+					if(currSheepDto.isEat()) {
+						tiles[currSheepDto.getY()][currSheepDto.getX()].setHasGrass(false);
+					}
+					currSheep.setY(currSheepDto.getY());
+					currSheep.setX(currSheepDto.getX());
+				}
+
+			}
+			
+			
+		}
+	}
+
+	public Sheep findSheep(SheepDTO sheepDto) {
+		Sheep sheep = new Sheep(sheepDto.getUsername(), sheepDto.getX(), sheepDto.getY(),
+				sheepDto.getScore());
+		if (sheeps.contains(sheep)) {
+			return sheeps.get(sheeps.indexOf(sheep));
+		}
+		return null;
 	}
 }

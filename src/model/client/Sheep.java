@@ -44,6 +44,13 @@ public class Sheep {
 		this.direction = "up";
 	}
 	
+	public Sheep(String name, int x, int y, int score) {
+		this.name = name;
+		this.x = x;
+		this.y = y;
+		this.score = score;
+	}
+	
 	//public Sheep	
 	
 	public String getName() {
@@ -116,4 +123,29 @@ public class Sheep {
 		return willTransfer;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sheep other = (Sheep) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+	
 }

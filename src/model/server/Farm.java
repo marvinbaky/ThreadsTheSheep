@@ -151,6 +151,7 @@ public class Farm {
 			synchronized(tile) {
 				if (tile.hasGrass()) {
 					tile.setHasGrass(false);
+					s.setHasEaten(true);
 					s.incrementScore();
 				} else {
 					// Error, no more grass

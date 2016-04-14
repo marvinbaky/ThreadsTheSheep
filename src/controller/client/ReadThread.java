@@ -9,6 +9,7 @@ import java.util.List;
 
 import model.DTO.ServerDataDTO;
 import model.DTO.SheepDTO;
+import model.client.Farm;
 import model.client.Sheep;
 
 public class ReadThread extends Thread {
@@ -16,16 +17,18 @@ public class ReadThread extends Thread {
 	private ObjectInputStream in;
 	private Sheep sheep;
 	private String username;
+	private Farm farm;
 
 	public ReadThread(ObjectInputStream in, Sheep sheep) {
 		this.in = in;
 		this.sheep = sheep;
 	}
 
-	public ReadThread(String name, ObjectInputStream in, Sheep sheep) {
+	public ReadThread(String name, ObjectInputStream in, Sheep sheep, Farm farm) {
 		username = name;
 		this.in = in;
 		this.sheep = sheep;
+		this.farm = farm;
 	}
 
 	public void run() {
@@ -72,13 +75,18 @@ public class ReadThread extends Thread {
 					sheep.setX(serverData.getX());
 					sheep.setY(serverData.getY());
 				}
-				List<SheepDTO> sheepDtos = serverData.getSheepDtos();
-				for (int i = 0; i < sheepDtos.size(); i++) {
-					System.out.println("Connected player: "
-							+ sheepDtos.get(i).getUsername() + " x: "
-							+ sheepDtos.get(i).getX() + " y: "
-							+ sheepDtos.get(i).getY());
-				}
+				
+				serverData.getSheepDtos();
+				
+				farm.plot(serverData.getSheepDtos());
+				
+//				List<SheepDTO> sheepDtos = serverData.getSheepDtos();
+//				for (int i = 0; i < sheepDtos.size(); i++) {
+//					System.out.println("Connected player: "
+//							+ sheepDtos.get(i).getUsername() + " x: "
+//							+ sheepDtos.get(i).getX() + " y: "
+//							+ sheepDtos.get(i).getY());
+//				}
 
 				// List<SheepDTO> sheepDtos = serverData.getSheepDtos();
 				// for (SheepDTO sheepDto : sheepDtos) {
@@ -88,7 +96,7 @@ public class ReadThread extends Thread {
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 }

@@ -20,11 +20,12 @@ public class ServerThread extends Thread {
 
 	private static List<ObjectOutputStream> allClientStream;
 	private static BlockingQueue<ServerDataDTO> serverDataDtos;
-	private static List<SheepDTO> sheepDtos;
+	private static BlockingQueue<SheepDTO> sheepDtos;
 	private Socket mainClient;
 	private String username;
 	private static Farm farm;
 	private GridPanel grid;
+	private Sheep sheep;
 	private Object lock;
 
 	public ServerThread(Socket clientSocket, Farm farm, GridPanel grid) {
@@ -50,7 +51,7 @@ public class ServerThread extends Thread {
 		ServerThread.serverDataDtos = serverDataQueue;
 	}
 	
-	public static void  initializeSheepDTOs(List<SheepDTO> sheepDtos) {
+	public static void  initializeSheepDTOs(BlockingQueue<SheepDTO> sheepDtos) {
 		ServerThread.sheepDtos = sheepDtos;
 	}
 
@@ -59,7 +60,6 @@ public class ServerThread extends Thread {
 		try {
 			ObjectInputStream in = new ObjectInputStream(mainClient.getInputStream());
 			SheepDTO sheepDto;
-			Sheep sheep = null;
 			while (true) {
 				sheepDto = (SheepDTO) in.readObject();
 					
@@ -73,6 +73,8 @@ public class ServerThread extends Thread {
 				} else {
 					if(sheepDto.getTransfer()) {
 						farm.remove(sheep);
+						grid.updateGrid(farm);
+						grid.repaint();
 						break;
 					} else if (sheepDto.isEat()) {
 						sheep = new Sheep(username, sheepDto.getX(), sheepDto.getY());
@@ -90,7 +92,8 @@ public class ServerThread extends Thread {
 				SheepDTO toPassSheep = new SheepDTO(sheep.getName(), sheep.getX(), sheep.getY(), sheep.getScore());
 				
 				serverDataDtos.put(serverData);
-				sheepDtos.add(toPassSheep);
+				sheepDtos.put(toPassSheep);
+				
 			}
 
 			// Thread.sleep(50);
@@ -195,6 +198,9 @@ public class ServerThread extends Thread {
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			farm.remove(sheep);
+			grid.updateGrid(farm);
+			grid.repaint();
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

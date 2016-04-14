@@ -5,9 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.SocketException;
+import java.util.List;
 
 import model.DTO.ServerDataDTO;
+import model.DTO.SheepDTO;
 import model.client.Sheep;
 
 public class ReadThread extends Thread {
@@ -33,12 +34,13 @@ public class ReadThread extends Thread {
 		try {
 			while (true) {
 				long startTime = System.nanoTime();
-//				try {
+				// try {
 				serverData = (ServerDataDTO) in.readObject();
-//				} catch (InternalError | ClassCastException | IllegalStateException e) {
-//					break;
-//				}
-				
+				// } catch (InternalError | ClassCastException |
+				// IllegalStateException e) {
+				// break;
+				// }
+
 				long endTime = System.nanoTime();
 
 				long duration = (endTime - startTime);
@@ -58,7 +60,7 @@ public class ReadThread extends Thread {
 				try {
 					fw = new FileWriter(file.getAbsoluteFile(), true);
 					BufferedWriter bw = new BufferedWriter(fw);
-					bw.write(username + ": " + ms + "\n");
+					bw.write(ms + "\n");
 					bw.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -70,6 +72,14 @@ public class ReadThread extends Thread {
 					sheep.setX(serverData.getX());
 					sheep.setY(serverData.getY());
 				}
+				List<SheepDTO> sheepDtos = serverData.getSheepDtos();
+				for (int i = 0; i < sheepDtos.size(); i++) {
+					System.out.println("Connected player: "
+							+ sheepDtos.get(i).getUsername() + " x: "
+							+ sheepDtos.get(i).getX() + " y: "
+							+ sheepDtos.get(i).getY());
+				}
+
 				// List<SheepDTO> sheepDtos = serverData.getSheepDtos();
 				// for (SheepDTO sheepDto : sheepDtos) {
 				// System.out.println(sheepDto.getUsername());

@@ -90,7 +90,7 @@ public class ClientThread extends Thread {
 					if (direction.equals("eat")) {
 						sheep.setEatState(true);
 					} else {
-						sheep.move("right");
+						sheep.move(direction);
 						farm.move(sheep);
 
 						if (sheep.willTransfer()) {

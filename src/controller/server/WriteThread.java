@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import model.DTO.ServerDataDTO;
 import model.DTO.SheepDTO;
@@ -14,7 +15,7 @@ import model.DTO.SheepDTO;
 public class WriteThread extends Thread {
 	private static List<ObjectOutputStream> allClientStream;
 	private static BlockingQueue<ServerDataDTO> serverDataDtos;
-	private static List<SheepDTO> sheepDtos;
+	private static BlockingQueue<SheepDTO> sheepDtos;
 
 	public WriteThread() {
 	}
@@ -27,7 +28,7 @@ public class WriteThread extends Thread {
 		WriteThread.serverDataDtos = serverDataQueue;
 	}
 	
-	public static void  initializeSheepDTOs(List<SheepDTO> sheepDtos) {
+	public static void  initializeSheepDTOs(BlockingQueue<SheepDTO> sheepDtos) {
 		WriteThread.sheepDtos = sheepDtos;
 	}
 
@@ -80,14 +81,6 @@ public class WriteThread extends Thread {
 			// e.printStackTrace();
 			// }
 			// }
-
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
 			ServerDataDTO data = null;
 			try {
 				data = serverDataDtos.take();
@@ -96,12 +89,28 @@ public class WriteThread extends Thread {
 				e1.printStackTrace();
 			}
 			
-			synchronized(sheepDtos) {
-				data.setSheepDTOs(sheepDtos);
-				List<SheepDTO> sheepDtos = Collections.synchronizedList(new ArrayList<>());
-				ServerThread.initializeSheepDTOs(sheepDtos);
-				WriteThread.initializeSheepDTOs(sheepDtos);
+			List<SheepDTO> sheepDtos = new ArrayList<>();
+			SheepDTO sheepDto;
+			for(int i = 0;i < 50; i++) {
+				try {
+					sheepDto = WriteThread.sheepDtos.poll(1, TimeUnit.MILLISECONDS);
+					if(sheepDto != null) {
+						sheepDtos.add(sheepDto);
+					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			
+			data.setSheepDTOs(sheepDtos);
+			
+//			synchronized(sheepDtos) {
+//				data.setSheepDTOs(sheepDtos);
+//				List<SheepDTO> sheepDtos = Collections.synchronizedList(new ArrayList<>());
+//				ServerThread.initializeSheepDTOs(sheepDtos);
+//				WriteThread.initializeSheepDTOs(sheepDtos);
+//			}
 			
 			for (int i = 0; i < allClientStream.size(); i++) {
 				try {

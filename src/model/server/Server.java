@@ -49,7 +49,7 @@ public class Server {
 			ServerThread.initializeServerDataQueue(serverDataQueue);
 			WriteThread.initializeServerDataQueue(serverDataQueue);
 			
-			List<SheepDTO> sheepDtos = Collections.synchronizedList(new ArrayList<>());
+			BlockingQueue<SheepDTO> sheepDtos = new LinkedBlockingQueue<>();
 			ServerThread.initializeSheepDTOs(sheepDtos);
 			WriteThread.initializeSheepDTOs(sheepDtos);
 			
